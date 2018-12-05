@@ -1,0 +1,28 @@
+{
+  "name": "wolfieForum",
+  "version": "1.0.0",
+  "description": "A Stack Overflow inspired web application, where students can post and answer questions on various topics related to their areas of study.",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm start",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sainathcvs/wolfieForum.git"
+  },
+  "keywords": [],
+  "author": "sainathcvs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sainathcvs/wolfieForum/issues"
+  },
+  "homepage": "https://github.com/sainathcvs/wolfieForum#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "nano": "^7.1.1",
+    "path": "^0.12.7",
+    "request": "^2.88.0"
+  }
+}
