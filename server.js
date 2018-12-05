@@ -45,7 +45,7 @@ app.post('/createUser', function (req, res) {
           if (!err){
             delete postParam.password;
             wolfie.insert(postParam, function(err1, body1) {
-              // gatordialogue table insert successfull 
+              // wolfie table insert successfull 
               if(!err1){
                 msg.isUserCreated = true;
                 msg.isDuplicateUser = false;
