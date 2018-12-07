@@ -71,3 +71,39 @@ app.post('/createUser', function (req, res) {
       });
     }
 });
+
+// authenticate user credentials
+app.post('/authenticateUser', function(req,res){
+  var jsonString = '';
+  req.on('data', function (data) {
+      jsonString += data;
+  });
+
+  req.on('end', function () {
+    postParam = JSON.parse(jsonString);
+    console.log('post params: ' + postParam.username, postParam.password);
+    nano.auth(postParam.username, postParam.password, function (err, body, headers) {
+      var response = new Object();
+      if (err) {
+        console.log("authentication failed");
+        response.isAuthenticated = false;
+        res.send(response);
+      }
+      else if (headers && headers['set-cookie']) {
+        wolfie.view('wolfieDesignDoc', 'userView', { key: postParam.username }, function(err, body) {
+        if (!err) {
+        	console.log(JSON.stringify(body))
+          console.log(body.rows[0].value.name);
+          response.isAuthenticated = true;
+          response.currentUser = body.rows[0].value;
+          console.log("response---",JSON.stringify(response))
+          res.send(response);
+        }
+        else {
+          console.log(err);
+        }
+        });         
+      }
+    });
+  });
+});
