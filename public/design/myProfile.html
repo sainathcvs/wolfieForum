@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- <script src="/static/lib/jquery-2.1.4.min.js"></script> -->
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script type="text/javascript" src="../js/main.js"></script>
+
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" href="/scripts/css/bootstrap.min.css">
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="../css/myProfile.css"/>
+<link rel="stylesheet" href="../css/style.css"/>
+
+
+<script type="text/javascript" src="/static/lib/jquery.dataTables.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".btn-pref .btn").click(function () {
+            $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
+            // $(".tab").addClass("active"); // instead of this do the below 
+            $(this).removeClass("btn-default").addClass("btn-primary");   
+        });
+        validateSession();
+        // load userName
+        $("#headerUserID").text(JSON.parse(localStorage.getItem("loggedInUser")).displayname);
+        $("#userId").text(JSON.parse(localStorage.getItem("loggedInUser")).displayname);
+        $("#firstNameID").text(JSON.parse(localStorage.getItem("loggedInUser")).displayname);
+        $("#departmentID").text(JSON.parse(localStorage.getItem("loggedInUser")).department);
+        loadRecentQuestionsTable();
+        loadRecentAnswersTable();
+
+        $("#favorites").click();
+        $(".btn-pref .btn").click(function () {
+            $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
+            // $(".tab").addClass("active"); // instead of this do the below 
+            $(this).removeClass("btn-default").addClass("btn-primary");   
+        });
+    });
+</script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar fs20" role="navigation">
+                <div class="left mt15 logo">
+                    <a href="/static/design/home.html" class="logo"><img src="/static/images/logo.png"></a>
+                </div>
+                <div class="right mt15">
+                    <span class="leaderBoard"> 
+                                        
+                    </span> 
+                    <ul class="nav nav-pills">  
+                        <li>
+                            <img src="/static/images/wolfie_small.png"> 
+                        </li>
+                        <li class="mt15 leaderBoardLink" onclick="goToLeaderBoard()">
+                            <i class="fa fa-trophy fa-lg" aria-hidden="true"></i> Leaderboard       
+                        </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <img src="/static/images/profile.png"> 
+                                <span id="headerUserID"> </span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" id="profileMenu">
+                                <li onclick="goToProfile()"> <i class="fa fa-user fa-lg" aria-hidden="true"></i> My Profile </li>
+                                
+                                <li onclick="clearSession()"><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i> Logout </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    <hr class="colorgraph headergraph">
+    </header>
+
+    <div class="container grid">
+    <div class="col-lg-12 col-sm-10">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" src="/static/images/profile.png">
+        </div>
+        <div class="card-info"> <span class="card-title" id="userId">Random User</span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="..." style="margin-top: 50px">
+        <div class="btn-group" role="group">
+            <button type="button" id="favorites" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Recently Asked Questions</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="stars" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <div class="hidden-xs">Recently Answered Questions </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in" id="tab1">
+            <div id="userRecentQuestionsWrapper">
+                <table id="recentQuestionsTable" class="display" width=80></table>
+            </div>
+      </div>
+        <div class="tab-pane fade in active" id="tab2">
+            <div id="userRecentAnswersWrapper" >
+                <table id="recentAnswersTable" class="display" width=120></table>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+    </div>
+    </body>
+</html>

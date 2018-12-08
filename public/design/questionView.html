@@ -1,0 +1,131 @@
+<html>
+<head>
+<script src="/static/lib/jquery-2.1.4.min.js"></script>
+<script src="/static/lib/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<link rel="stylesheet" href="/static/css/font-awesome-4.4.0/css/font-awesome.min.css">
+<script type="text/javascript" src="/static/lib/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/scripts/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		validateSession();
+		CKEDITOR.replace('questionAnswer');
+		$("#headerUserID").text(JSON.parse(localStorage.getItem("loggedInUser")).displayname);
+		loadQuestionData();
+		loadAnswersTable();
+		$("#postAnswerBtn").click(function() {
+			postAnswer();
+		});
+	});
+</script>
+</head>
+
+<body>
+	<header>
+        <div class="container">
+            <nav class="navbar fs20" role="navigation">
+                <div class="left mt15 logo">
+                    <a href="/static/design/home.html" class="logo"><img src="/static/images/logo.png"></a>
+                </div>
+                <div class="right mt15">
+                    <span class="leaderBoard"> 
+                                        
+                    </span> 
+                    <ul class="nav nav-pills"> 
+                    	<li>
+                    		<img src="/static/images/wolfie_small.png"> 
+                    	</li>
+                        <li class="mt15 leaderBoardLink" onclick="goToLeaderBoard()">
+                            <i class="fa fa-trophy fa-lg" aria-hidden="true"></i> Leaderboard       
+                        </li>
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <img src="/static/images/profile.png"> 
+                                <span id="headerUserID"> </span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" id="profileMenu">
+                                <li onclick="goToProfile()"> <i class="fa fa-user fa-lg" aria-hidden="true"></i> My Profile </li>
+                                
+                                <li onclick="clearSession()"><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i> Logout </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    <hr class="colorgraph headergraph">
+    </header>
+
+	<div class="container grid">
+
+		<div class="left grid-col col80 mt20">
+
+			<div class="section-title">
+					<span id="questionTitle"></span>
+			</div>
+
+			<div>
+				<div class="post-text pre prettyprint">
+					<span id="questionDesc">
+					</span>
+				</div>
+				<div class="post-taglist" id="questionTags"> 
+				</div>
+			</div>
+
+			<div class="right action-links">
+				<div class="post-signature owner" style="display:inline-block">
+					<div class="user-info">
+				        <div class="user-action-time"> asked <span class="relativetime" id="timeStamp"> </span>
+				        </div>
+				        <div class="user-gravatar32"> 
+				            <a href="#"><div class="gravatar-wrapper-32"><img src="https://www.gravatar.com/avatar/335a9ae9364e36c131fb599feaf0e540?s=32&amp;d=identicon&amp;r=PG&amp;f=1" alt="" width="32" height="32"></div></a>
+				        </div>
+		                <div class="user-details">
+		                	<a href="#" id="userName"> </a>
+		                </div>
+					</div>
+				</div>
+			</div>
+
+			<div id="successPlaceholder" class="hide">
+				<i class="fa fa-check pr5" style="color:green"></i><span class="successText">Answer posted successfully </span>
+			</div>
+
+			<div class="section-title lightBorder" style="margin-top: 130px;">
+					<span id="yourAnswer">Answers</span>
+			</div>
+
+			<div id="answersTableWrapper" class="mb40" style="margin-top: 30px;">
+				<table id="answersDTable" class="display" width="100%"></table>
+			</div>
+
+			<div class="section-title lightBorder" style="margin-top: 70px;">
+					<span id="yourAnswer">Your answer</span>
+			</div>
+			<div id="errorPlaceholder" class="hide">
+				<i class="fa fa-warning pr5" style="color:orangered"></i><span class="errorText">Something went wrong. Please try again later!</span>
+			</div>
+			<textarea id="questionAnswer" class="mt15" placeholder="Elaborate your event in detail" rows="6" cols="40" name="questionAnswer" ></textarea>
+		
+		</div>
+
+		<div id="question-action-links-wrapper" class="mt30">
+			<ul class="fx fx-center mb40">
+				<!-- <li class="left pr20"><a id="cancel-session-link" class="btn btn-black"><i class="fa fa-times-circle pr5"></i>Cancel</a></li> -->
+				<li class="right"><a id="postAnswerBtn" class="btn btn-light-blue"><i class="fa fa-check pr5"></i>Post Answer</a></li>
+			</ul>
+		</div>
+
+	</div>
+
+
+</body>
+
+</html>

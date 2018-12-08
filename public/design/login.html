@@ -10,6 +10,7 @@
       <link rel="stylesheet" href="../css/style.css">
       <script>
         $(document).ready(function(){
+          $("#errorholder").addClass("hide");
            $("#loginBtn").click(function(e){
               e.preventDefault();
               authenticateUser();
@@ -25,7 +26,13 @@
 </head>
 
 <body>
-
+  <header>
+    <div class="container">
+          <a class="logo"><img src="/static/images/logo.png"></a>
+        </div>
+    </div>
+  
+  </header>
   <div class="login-page">
   <div class="form">
     <form class="register-form">
@@ -50,6 +57,9 @@
       <input id="password" type="password" placeholder="password"/>
       <button id = "loginBtn">login</button>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
+      <p class="message" id="errorholder" class="hide">
+        <i class="fa fa-warning pr5" style="color:orangered"></i><span class="errorText">Login Failed!</span>
+      </p>
     </form>
   </div>
 </div>
@@ -61,8 +71,8 @@
 </html>
 <script type="text/javascript">
 $('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
   $("#successPlaceholder").addClass("hide");
   $("#errorPlaceholder").addClass("hide");
+   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
 });
 </script>
