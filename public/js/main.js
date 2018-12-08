@@ -97,6 +97,8 @@ var authenticateUser = function(){
 		});	 
 		request.fail(function( jqXHR, textStatus ) {
 		  console.log( "login failed: " + textStatus );
+			$('#errorholder .errorText').html("Login failed!");
+			$('#errorholder').removeClass("hide");
 		});
     }
     else{
