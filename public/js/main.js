@@ -1,4 +1,5 @@
-var serverUrl = "http://localhost:3000"
+// var serverUrl = "http://localhost:3000"
+var serverUrl = "wolfie-forum.herokuapp.com"
 
 /* Generates Unique Id*/
 function uniqueId() {
