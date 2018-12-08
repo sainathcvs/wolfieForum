@@ -128,7 +128,7 @@ var postQuestion = function(){
 	var data = new Object();
 	data.title = $("#title")[0].value;
 	data.category = $('#categoryDropdown')[0].value;
-	// data.tags = $("#questionTags").selectivity('data');
+	data.tags = $("#questionTags").selectivity('data');
 	data.type = "question";
 	data.question = CKEDITOR.instances.questionDesc.getData();
 	data.userId = JSON.parse(localStorage.getItem("loggedInUser")).userId;
@@ -136,7 +136,7 @@ var postQuestion = function(){
 	data.displayname = JSON.parse(localStorage.getItem("loggedInUser")).displayname;
 	data.timeStamp = new Date();
 	data.questionId = uniqueId();
-	console.log(JSON.stringify(data))
+	console.log("data----",JSON.stringify(data))
 	if(data.title != "" && data.tags != "" && data.category != "" && data.question != ""){
 		var request = $.ajax({
 			url : serverUrl + "/postQuestion",
@@ -153,7 +153,7 @@ var postQuestion = function(){
 			console.log("question posted %o", status);
 			CKEDITOR.instances.questionDesc.setData("");
 			$("#questionForm")[0].reset();
-			// $("#questionTags").selectivity('clear');
+			$("#questionTags").selectivity('clear');
 			$("#successPlaceholder").removeClass("hide");
 			window.scrollTo(100,0);
 		});
@@ -353,11 +353,11 @@ var loadQuestionData = function(){
 		localStorage.setItem("currentQueCat", data.value.category);
 		
 		var tagStr = "";
-		// if(data.value.tags != undefined || data.value.tags != null || data.value.tags != ""){
-		// 	for(var i=0; i< data.value.tags.length;i++){
-		// 		tagStr += '<a href="#" class="post-tag js-gps-track" title="" rel="tag">'+ data.value.tags[i].text + '</a>';
-		// 	}
-		// }
+		if(data.value.tags != undefined || data.value.tags != null || data.value.tags != ""){
+			for(var i=0; i< data.value.tags.length;i++){
+				tagStr += '<a href="#" class="post-tag js-gps-track" title="" rel="tag">'+ data.value.tags[i].text + '</a>';
+			}
+		}
 		
 		var displayname = data.value.displayname;
 		if(displayname == undefined || displayname == null || displayname == "")
@@ -658,7 +658,7 @@ var loadLeaderBoard = function(){
 	        data:status,
 	       	columns: [
 	       	      {title : "Rank", "width": "30%"}, 
-		          {title : "Gator", "width": "35%"}, 
+		          {title : "Wolfie", "width": "35%"}, 
 		          {title: "Reputation", "width": "35%"}
 		     ],   
 		    //"columns":[{"data":"user"},{"data":"reputation"}],
@@ -669,4 +669,117 @@ var loadLeaderBoard = function(){
 		});
 		$("#loader")[0].style.display = "none";
 	});
+}
+
+function initializeSelectivityForQuestionTags(){
+
+	var request = $.ajax ({
+		url: serverUrl + "/getAllTags",
+		method: "GET",
+		headers:{
+			"Content-type":"application/x-www-form-urlencoded",
+			"Connection":"close"
+		}
+	});
+	request.done(function(data) {
+		var items = [];
+		for(i=0;i<data.length;i++){
+			var item = {
+				id: data[i].key, 
+				text: data[i].value.tagName
+			};
+			// console.log("ir----",item)
+			items.push(item);
+		}
+		// console.log("inside neede---",items)
+		$('#questionTags').selectivity({
+			items: items,
+			multiple: true,
+		   	placeholder: 'Tags',
+		   	createTokenItem: function(token){
+		   	 	$('.selectivity-multiple-input').val("");
+		   	 	var itemArray = $('#questionTags').selectivity('data');
+		   	 	// When there are no categories in the system
+		   	 	if(itemArray == ""){
+		   	 		$('#questionTagsForm #tags').val(token);
+	   	 			var tagId = addTag(token);
+			   	 	var pluginItem = {
+						id: tagId,
+						text: token
+					};
+					// Refresh the selectivty since new session category has been added to the system
+					initializeSelectivityForQuestionTags();
+					return pluginItem;
+		   	 	}
+		   	 	// Session categories are available : Some are already selected
+		   	 	else{
+		   	 		// Get the item text values from itemArray
+		   	 		var itemTexts = [];
+		   	 		for(i in itemArray){
+		   	 			itemTexts.push(itemArray[i].text);
+		   	 		}
+		   	 		// Check if the token is already selected/avaialble in the system
+		   	 		if(itemTexts.indexOf(token)!=-1){
+		   	 			// Don't add, clear the input field
+		   	 			return null;
+		   	 		} else {
+		   	 			// Add it to JCR
+		   	 			$('#questionTagsForm #tags').val(token);
+		   	 			var tagId = addTag(token);
+				   	 	var pluginItem = {
+							id: tagId,
+							text: token
+						};
+						// Refresh the selectivty since new session category has been added to the system
+						initializeSelectivityForQuestionTags();
+						return pluginItem;
+		   	 		}
+		   	 	}
+		   	 	
+		   	}
+		});
+	});	
+}
+
+function getTags() {
+	var request = $.ajax ({
+		url: serverUrl + "/getAllTags",
+		method: "GET",
+		headers:{
+			"Content-type":"application/x-www-form-urlencoded",
+			"Connection":"close"
+		}
+	});
+	request.done(function(data) {
+	    return data;
+	});	 
+	request.fail(function( jqXHR, textStatus ) {
+	  console.log("getting tags failed" + textStatus);
+	});
+}
+
+function addTag(tagName) {
+  	var tagId = uniqueId();
+  	var data = new Object();
+  	data.tagId = tagId;
+  	data.type = "tag";
+  	data.tagName = tagName;
+
+  	var request = $.ajax({
+		url: serverUrl + "/createTag",
+		method: "POST",
+		data: JSON.stringify(data),
+		headers:{
+			"Content-type":"application/x-www-form-urlencoded",
+			"Content-length":data.length,
+			"Connection":"close"
+		}
+	});
+	request.done(function(status) {
+		console.log("tag created successfully %o", status);
+	});	 
+	request.fail(function( jqXHR, textStatus ) {
+	  console.log("tag creation failed" + textStatus);
+	});
+	return tagId;
 }

@@ -1,0 +1,40 @@
+{
+   "_id": "_design/wolfieDesignDoc",
+   "_rev": "27-4e6b6391fd4ec7cc10bb505371eb88b3",
+   "language": "javascript",
+   "views": {
+       "userView": {
+           "map": "function(doc) {\n  emit(doc.name, doc);\n}"
+       },
+       "userIdView": {
+           "map": "function(doc) {\n  emit(doc.name, doc.userId);\n}"
+       },
+       "questionView": {
+           "map": "function(doc) {\nif(doc.type==\"question\"){\n  emit(doc.questionId, doc);\n}\n}"
+       },
+       "questionDataView": {
+           "map": "function(doc) {\nif(doc.questionId!=null && doc.type==\"question\"){\n  emit(doc.questionId, doc);\n}\n}"
+       },
+       "answerView": {
+           "map": "function(doc) {\nif(doc.answerId!=null && doc.type==\"answer\"){\n  emit(doc.questionId, doc);\n}\n}"
+       },
+       "answerDataView": {
+           "map": "function(doc) {\nif(doc.answerId!=null && doc.type==\"answer\"){\n  emit(doc.answerId, doc);\n}\n}"
+       },
+       "recentQuestions": {
+           "map": "function(doc) {\nif(doc.questionId!=null && doc.type==\"question\"){\n  emit(doc.userId, doc);\n}\n}"
+       },
+       "getQuestionIdsForRecentAnswers": {
+           "map": "function(doc) {\nif(doc.questionId!=null && doc.type==\"answer\"){\n  emit(doc.userId, doc.questionId);\n}\n}"
+       },
+       "getQuestionsFromIds": {
+           "map": "function(doc) {\nif(doc.questionId!=null && doc.type==\"question\"){\n  emit(doc.questionId, doc);\n}\n}"
+       },
+       "tagView": {
+           "map": "function(doc) {\nif(doc.tagId!=null && doc.type==\"tag\"){\n  emit(doc.tagId, doc);\n}\n}"
+       },
+       "leaderboard": {
+           "map": "function(doc) {\n  if(doc.type==\"user\"){\n  emit([doc.reputation,doc.displayname],doc);\n  }\n}"
+       }
+   }
+}

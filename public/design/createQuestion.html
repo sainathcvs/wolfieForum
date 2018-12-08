@@ -16,13 +16,14 @@
 
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
+<!-- 
 <link rel="stylesheet" href="/scripts/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="/scripts/css/bootstrap-theme.min.css">
 
 <script src="/scripts/js/bootstrap.min.js"></script>
-
+ -->
+<link rel="stylesheet" href="/static/css/font-awesome-4.4.0/css/font-awesome.min.css">
 <script type="text/javascript">
 	$(document).ready(function(){
 		validateSession();
@@ -30,11 +31,11 @@
 		$("#headerUserID").text(JSON.parse(localStorage.getItem("loggedInUser")).displayname);
 
         CKEDITOR.replace('questionDesc');
-        // initializeSelectivityForQuestionTags();
+        initializeSelectivityForQuestionTags();
 		$("#questionTags").on("change", function(e) {
 		  if(e.removed!=undefined){
 		  	console.log("removed = %o",e.removed);
-        	// initializeSelectivityForQuestionTags();
+        	initializeSelectivityForQuestionTags();
 		  }
 		});
 
@@ -57,10 +58,7 @@
 					<span class="leaderBoard"> 
 										
  					</span> 
-					<ul class="nav nav-pills">  
-                    	<li>
-                    		<img src="/static/images/wolfie_small.png"> 
-                    	</li>
+					<ul class="nav nav-pills">
 						<li class="mt15 leaderBoardLink" onclick="goToLeaderBoard()">
 							<i class="fa fa-trophy fa-lg" aria-hidden="true"></i> Leaderboard 		
 						</li>

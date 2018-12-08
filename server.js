@@ -115,7 +115,7 @@ var updateUserReputation = function (userId, points) {
       console.log("%o", body);
       var user = body.rows[0].value;
       user.reputation += points;
-      wolfie.insert(user, function(err, body){
+      wolfie.insert(user, function(egetAllTagsrr, body){
         console.log("user reputation update status %o", err, body);
       });
     }
@@ -322,7 +322,7 @@ app.get('/leaderboard', function(req,res){
               var item = [
                 Rank = j,
                 Reputation = k[1],
-                Gator= k[0]
+                Wolfie= k[0]
                 
               ];
               data.push(item);
@@ -349,6 +349,33 @@ app.get("/validateAnswer", function(req, res){
         var response = {"isValidated" : true}
         res.send(response);
       });
+    }
+    else {
+      console.log(err);
+    }
+  });
+});
+
+// create tag for questions
+app.post("/createTag", function(req,res){
+  var jsonString = '';
+      req.on('data', function (data) {
+          jsonString += data;
+      });      
+      req.on('end', function () {
+        postParam = JSON.parse(jsonString);
+        wolfie.insert(postParam, function(err, body){
+          // fail silently - no error messages to frontend 
+        });
+      });
+});
+
+// get all tags for questions
+app.get("/getAllTags", function(req,res){ 
+  wolfie.view('wolfieDesignDoc', 'tagView', function(err, body) {
+    if (!err) {
+    	console.log("ttags----",JSON.stringify(body.rows))
+      res.send(body.rows);
     }
     else {
       console.log(err);
