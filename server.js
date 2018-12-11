@@ -3,8 +3,8 @@ var Request = require('request')
 var app = express();
 
 // nano config 
-var nano = require('nano')('http://127.0.0.1:5984/');
-// var nano = require('nano')('https://couchdb-a714c9.smileupps.com/');
+// var nano = require('nano')('http://127.0.0.1:5984/');
+var nano = require('nano')('https://couchdb-a714c9.smileupps.com/');
 var user = nano.db.use('_users');
 var wolfie = nano.db.use("wolfie");
 
