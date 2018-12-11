@@ -1,5 +1,5 @@
-// var serverUrl = "http://localhost:3000"
-var serverUrl = "https://wolfie-forum.herokuapp.com"
+var serverUrl = "http://localhost:3000"
+// var serverUrl = "https://wolfie-forum.herokuapp.com"
 
 /* Generates Unique Id*/
 function uniqueId() {
@@ -13,7 +13,12 @@ function createUser(){
 	data._id = "org.couchdb.user:" + $('#reg_username')[0].value;
 	data.name = $('#reg_username')[0].value;
 	data.type = "user";
-	data.roles = [];
+	var roles = []
+	var isChecked = $('#isProf').is(':checked');
+	if(isChecked){
+		roles.push("professor")
+	}
+	data.roles = roles;
 	data.password = $('#reg_password')[0].value;
 	data.userId = uniqueId();
 	data.email = $('#email')[0].value;

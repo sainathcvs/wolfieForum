@@ -3,8 +3,8 @@ var Request = require('request')
 var app = express();
 
 // nano config 
-// var nano = require('nano')('http://127.0.0.1:5984/');
-var nano = require('nano')('https://couchdb-a714c9.smileupps.com/');
+var nano = require('nano')('http://127.0.0.1:5984/');
+// var nano = require('nano')('https://couchdb-a714c9.smileupps.com/');
 var user = nano.db.use('_users');
 var wolfie = nano.db.use("wolfie");
 
@@ -30,7 +30,6 @@ app.get('/', (req, res) => {
 // create new user
 app.post('/createUser', function (req, res) {
    if (req.method == 'POST') {
-      
       var jsonString = '';
       req.on('data', function (data) {
           jsonString += data;
@@ -47,13 +46,14 @@ app.post('/createUser', function (req, res) {
             delete postParam.password;
             wolfie.insert(postParam, function(err1, body1) {
               // wolfie table insert successfull 
+              console.log("in err1------------>")
               if(!err1){
                 msg.isUserCreated = true;
                 msg.isDuplicateUser = false;
                 res.send(msg);
               }
               else {
-                console.log(err1);
+                console.log("hello error---",err1);
                 msg.isUserCreated = false;
                 if(err1.statusCode == 409)
                   msg.isDuplicateUser = true;
@@ -62,7 +62,7 @@ app.post('/createUser', function (req, res) {
             });
           }
           else { 
-            console.log(err);
+            console.log("inton last---",err);
             msg.isUserCreated = false;
             if(err.statusCode == 409)
               msg.isDuplicateUser = true;
@@ -320,14 +320,16 @@ app.get('/leaderboard', function(req,res){
             var j =1;
             for(var i=status.length-1; i>=0; i--){
               k = status[i].key;
-              var item = [
-                Rank = j,
-                Reputation = k[1],
-                Wolfie= k[0]
-                
-              ];
-              data.push(item);
-              j++;
+              if(status[i].value.roles.length==0){
+                var item = [
+                  Rank = j,
+                  Reputation = k[1],
+                  Wolfie= k[0]
+                  
+                ];
+                data.push(item);
+                j++;
+              }
             }
             console.log(data);
             res.send(data);
