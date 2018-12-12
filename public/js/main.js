@@ -14,10 +14,10 @@ function createUser(){
 	data.name = $('#reg_username')[0].value;
 	data.type = "user";
 	var roles = []
-	var isChecked = $('#isProf').is(':checked');
-	if(isChecked){
-		roles.push("professor")
-	}
+	// var isChecked = $('#isProf').is(':checked');
+	// if(isChecked){
+	// 	roles.push("professor")
+	// }
 	data.roles = roles;
 	data.password = $('#reg_password')[0].value;
 	data.userId = uniqueId();
@@ -25,7 +25,7 @@ function createUser(){
 	data.displayname = $('#fname')[0].value;
 	data.department = $('#department')[0].value;
 	data.reputation = 0;
-
+	console.log(JSON.stringify(data))
 	if(data.name != "" && data.password != "" && data.email != "" && data.displayname != "" && data.department != "") {
 	    var request = $.ajax({
 			url: serverUrl + "/createUser",
@@ -54,7 +54,7 @@ function createUser(){
 				
 		});	 
 		request.fail(function( jqXHR, textStatus ) {
-		  console.log("user creation failed" + textStatus );
+		  console.log("user creation failed " + textStatus );
 		  $('#errorPlaceholder').removeClass("hide");
 		});
 	}
@@ -144,7 +144,7 @@ var postQuestion = function(){
 	data.displayname = JSON.parse(localStorage.getItem("loggedInUser")).displayname;
 	data.timeStamp = new Date();
 	data.questionId = uniqueId();
-	console.log("data----",JSON.stringify(data))
+
 	if(data.title != "" && data.tags != "" && data.category != "" && data.question != ""){
 		var request = $.ajax({
 			url : serverUrl + "/postQuestion",
@@ -231,7 +231,7 @@ var constructQuestionData = function(data){
 	var tagStr = "";
 	if(data.tags != "" && data.tags != null){
 		for(var i=0; i< data.tags.length;i++){
-			tagStr += '<a href="#" class="post-tag js-gps-track" title="" rel="tag">'+ data.tags[i].text + '</a>';
+			tagStr += '<a href="#" style = "float:left" class="post-tag js-gps-track" title="" rel="tag">'+ data.tags[i].text + '</a>';
 		}
 	}
 
@@ -363,7 +363,7 @@ var loadQuestionData = function(){
 		var tagStr = "";
 		if(data.value.tags != undefined || data.value.tags != null || data.value.tags != ""){
 			for(var i=0; i< data.value.tags.length;i++){
-				tagStr += '<a href="#" class="post-tag js-gps-track" title="" rel="tag">'+ data.value.tags[i].text + '</a>';
+				tagStr += '<a href="#" style = "float:left" class="post-tag js-gps-track" title="" rel="tag">'+ data.value.tags[i].text + '</a>';
 			}
 		}
 		
